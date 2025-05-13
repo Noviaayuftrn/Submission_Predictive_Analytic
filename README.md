@@ -58,7 +58,7 @@ Dataset diabetes.csv terdiri dari:
   - scatter plot hubungan BMI (Body Mass Index) dan Glukosa: Grafik menunjukkan beberapa insight penting. Pemisahan kelas mulai terlihat di mana pasien dengan diabetes (oranye) cenderung memiliki nilai glukosa dan BMI yang lebih tinggi, sedangkan pasien tanpa diabetes (biru) lebih banyak tersebar di daerah dengan glukosa kurang dari 125 dan BMI di bawah 35. Secara visual, terdapat kecenderungan bahwa semakin tinggi nilai BMI, semakin tinggi pula kadar glukosa, dan semakin besar kemungkinan seseorang mengidap diabetes. Selain itu, terlihat adanya beberapa titik ekstrem dengan nilai glukosa atau BMI yang sangat rendah atau sangat tinggi
 
 ## Data Preparation
-Data dipersiapkan dengan membagi dataset menjadi fitur dan label (Outcome), kemudian dilakukan normalisasi untuk fitur-fitur numerik menggunakan StandardScaler. Data kemudian dibagi menjadi tiga set: training, validation, dan testing, dengan 70% untuk training, 15% untuk validation, dan 15% untuk testing.
+Data dipersiapkan dengan membagi dataset menjadi fitur dan label (Outcome), kemudian dilakukan normalisasi untuk fitur-fitur numerik menggunakan StandardScaler. Data kemudian dibagi menjadi tiga set: training, validation, dan testing, dengan 537 data sebesar 70% untuk training, 115 data sebesar 15% untuk validation, dan 116 data sebesar 15% untuk testing.
 
 ## Modeling
 Dua model digunakan dalam proyek ini untuk membandingkan hasil prediksi: Multilayer Perceptron (MLP) yang merupakan model neural network, dan Random Forest, yang merupakan algoritma ensemble.
