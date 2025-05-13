@@ -27,7 +27,7 @@ Dalam proyek ini, saya membangun sistem prediksi diabetes berdasarkan data keseh
 
 ## Data Understanding
 
-Dataset yang digunakan adalah Diabetes Data Set dari Kaggle, yang berisi informasi tentang 768 pasien dengan 8 fitur yaitu:
+Dataset yang digunakan adalah Diabetes Data Set dari Kaggle, berikut fitur yang ada dalam dataset:
 
 1. **Pregnancies**: Jumlah kehamilan.
 2. **Glucose**: Konsentrasi glukosa darah pada 2 jam setelah tes oral.
