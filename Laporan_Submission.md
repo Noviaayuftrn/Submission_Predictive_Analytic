@@ -60,18 +60,69 @@ Dataset diabetes.csv terdiri dari:
 ## Data Preparation
 Data dipersiapkan dengan membagi dataset menjadi fitur dan label (Outcome), kemudian dilakukan normalisasi untuk fitur-fitur numerik menggunakan StandardScaler. Data kemudian dibagi menjadi tiga set: training, validation, dan testing, dengan 537 data sebesar 70% untuk training, 115 data sebesar 15% untuk validation, dan 116 data sebesar 15% untuk testing.
 
+**Penjelasan Proses:**
+
+- **Memisahkan Fitur da Label:**
+```python
+X = df.drop('Outcome', axis=1)
+y = df['Outcome']
+```
+Fitur Outcome digunakan sebagai label target (0 = tidak diabetes, 1 = diabetes). Ini dilakukan untuk mencegah dominasi fitur dengan skala besar terhadap fitur lain.
+- **Standardisasi fitur:**
+```python
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+```
+Proses ini penting karena model seperti neural network sangat sensitif terhadap skala data. Dengan standardisasi (mean = 0, std = 1), konvergensi saat pelatihan model menjadi lebih cepat dan stabil. Dengan maksud menguji model secara adil dan mencegah overfitting.
+- **Membagi data:**
+```python
+X_train, X_temp, y_train, y_temp = train_test_split(..., test_size=0.3, stratify=y)
+X_val, X_test, y_val, y_test = train_test_split(...)
+```
+Data dibagi menjadi 70% data latih, 15% validasi, dan 15% data uji, dengan metode stratified split agar distribusi label tetap proporsional di semua subset data.
+
 ## Modeling
 Dua model digunakan dalam proyek ini untuk membandingkan hasil prediksi: Multilayer Perceptron (MLP) yang merupakan model neural network, dan Random Forest, yang merupakan algoritma ensemble.
 
-### MLP (Neural Network)
+**Penjelasan Proses:**
+
+ ### MLP (Neural Network)
+```python
+model = Sequential([
+    Dense(64, input_dim=X_train.shape[1], activation='relu'),
+    Dense(32, activation='relu'),
+    Dense(1, activation='sigmoid')
+])
+```
+  - Arsitektur: 2 hidden layer (64 dan 32 neuron), aktivasi ReLU, output sigmoid untuk klasifikasi biner.
+  - Optimizer: adam
+  - Loss: binary_crossentropy
+  - Epoch: 100
+  - Data validasi digunakan untuk memantau overfitting.
+
 Model neural network dengan dua lapisan tersembunyi (64 dan 32 neuron) berhasil dilatih selama 100 epoch dengan menggunakan fungsi aktivasi ReLU dan sigmoid di output.
  - **Akurasi dan Loss:** Model ini mencapai akurasi 75% di data pengujian dengan loss sebesar 0.46.
  - **ROC AUC:** Nilai AUC mencapai 0.82, menunjukkan kemampuan model dalam membedakan kelas dengan baik.
 
 ### Random Forest
+```python
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+```
+ - Algoritma ensemble berbasis pohon keputusan.
+ - Parameter penting: n_estimators=100 (jumlah pohon dalam hutan), random_state untuk replikasi hasil.
+ - Cocok untuk dataset dengan fitur campuran, tidak perlu normalisasi data.
+
 Model Random Forest diinisialisasi dengan 100 pohon keputusan dan dilatih menggunakan data yang sama. 
  - **Akurasi dan Loss:** Model ini mencapai akurasi 75% di data pengujian.
  - **ROC AUC:** Nilai AUC Random Forest mencapai 0.81, sedikit lebih rendah dibandingkan dengan MLP.
+
+### Kelenihan dan Kekurangan Tiap Model
+| Model             | Kelebihan                                                                       | Kekurangan                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **MLP**           | Mampu menangkap pola non-linear yang kompleks; fleksibel untuk berbagai dataset | Butuh tuning parameter lebih hati-hati; sensitif terhadap skala data; rawan overfitting                 |
+| **Random Forest** | Robust terhadap overfitting; tidak perlu scaling; interpretasi relatif mudah    | Tidak sebaik neural network dalam menangani interaksi kompleks; hasil bisa tidak stabil pada data kecil |
+
 
 ## Evaluasi Model
 Evaluasi model dilakukan menggunakan beberapa metrik, termasuk akurasi, precision, recall, f1-score, dan AUC.
