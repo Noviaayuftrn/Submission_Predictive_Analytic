@@ -65,7 +65,7 @@ Dua model digunakan dalam proyek ini untuk membandingkan hasil prediksi: Multila
 
 ### MLP (Neural Network)
 Model neural network dengan dua lapisan tersembunyi (64 dan 32 neuron) berhasil dilatih selama 100 epoch dengan menggunakan fungsi aktivasi ReLU dan sigmoid di output.
- - **Akurasi dan Loss:** Model ini mencapai akurasi 78% di data pengujian dengan loss sebesar 0.48.
+ - **Akurasi dan Loss:** Model ini mencapai akurasi 77% di data pengujian dengan loss sebesar 0.47.
  - **ROC AUC:** Nilai AUC mencapai 0.82, menunjukkan kemampuan model dalam membedakan kelas dengan baik.
 
 ### Random Forest
@@ -77,9 +77,9 @@ Model Random Forest diinisialisasi dengan 100 pohon keputusan dan dilatih menggu
 Evaluasi model dilakukan menggunakan beberapa metrik, termasuk akurasi, precision, recall, f1-score, dan AUC.
 - **MLP:**
   - **Confusion Matrix:**
-    - 67 pasien tanpa diabetes (Outcome = 0) berhasil diprediksi dengan benar, namun 8 pasien tersebut salah diprediksi sebagai diabetes.
-    - 23 pasien diabetes (Outcome = 1) berhasil diprediksi dengan benar, sementara 18 pasien tersebut salah diprediksi sebagai tidak diabetes.
-  - **Precision, Recall, F1-Score:** Precision untuk Outcome 0 adalah 0.79 dan untuk Outcome 1 adalah 0.74. Recall untuk Outcome 0 adalah 0.89 dan untuk Outcome 1 adalah 0.56. F1-Score untuk Outcome 0 adalah 0.84 dan untuk Outcome 1 adalah 0.64.
+    - 67 pasien tanpa diabetes (Outcome = 0) berhasil diprediksi dengan benar, namun 7 pasien tersebut salah diprediksi sebagai diabetes.
+    - 21 pasien diabetes (Outcome = 1) berhasil diprediksi dengan benar, sementara 20 pasien tersebut salah diprediksi sebagai tidak diabetes.
+  - **Precision, Recall, F1-Score:** Precision untuk Outcome 0 adalah 0.77 dan untuk Outcome 1 adalah 0.75. Recall untuk Outcome 0 adalah 0.91 dan untuk Outcome 1 adalah 0.51. F1-Score untuk Outcome 0 adalah 0.83 dan untuk Outcome 1 adalah 0.61.
   - **AUC:** Model ini menunjukkan ROC AUC sebesar 0.82, yang mengindikasikan performa yang baik dalam membedakan antara pasien diabetes dan non-diabetes.
     
 - **Random Forest:**
@@ -93,7 +93,7 @@ Evaluasi model dilakukan menggunakan beberapa metrik, termasuk akurasi, precisio
 ## Perbandingan Model
 
 - **Akurasi:**
-  - MLP: 78%
+  - MLP: 77%
   - Random Forest: 75%
 - **AUC:**
   - MLP: 0.82
