@@ -65,7 +65,7 @@ Dua model digunakan dalam proyek ini untuk membandingkan hasil prediksi: Multila
 
 ### MLP (Neural Network)
 Model neural network dengan dua lapisan tersembunyi (64 dan 32 neuron) berhasil dilatih selama 100 epoch dengan menggunakan fungsi aktivasi ReLU dan sigmoid di output.
- - **Akurasi dan Loss:** Model ini mencapai akurasi 75% di data pengujian dengan loss sebesar 0.47.
+ - **Akurasi dan Loss:** Model ini mencapai akurasi 75% di data pengujian dengan loss sebesar 0.46.
  - **ROC AUC:** Nilai AUC mencapai 0.82, menunjukkan kemampuan model dalam membedakan kelas dengan baik.
 
 ### Random Forest
