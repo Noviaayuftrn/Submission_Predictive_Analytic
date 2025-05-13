@@ -38,8 +38,6 @@ Dataset yang digunakan adalah Diabetes Data Set dari Kaggle, yang berisi informa
 7. **Age**: Usia (tahun).
 8. **Outcome**: Kelas target (0 = tidak diabetes, 1 = diabetes).
 
-Dataset ini diimpor ke dalam Python dengan menggunakan `pandas` dan dapat dilihat dengan fungsi `head()`.
-
 ### Jumlah Data
 
 Dataset diabetes.csv terdiri dari:
