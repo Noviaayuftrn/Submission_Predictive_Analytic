@@ -4,7 +4,7 @@
 
 Diabetes adalah salah satu penyakit kronis yang berdampak luas terhadap kualitas hidup masyarakat. Berdasarkan data dari World Health Organization (WHO), jumlah penderita diabetes meningkat secara signifikan setiap tahun. Oleh karena itu, prediksi dini terhadap potensi seseorang terkena diabetes sangat penting untuk mencegah komplikasi lebih lanjut.
 
-Dalam proyek ini, saya membangun sistem prediksi diabetes berdasarkan data kesehatan pasien menggunakan pendekatan klasifikasi machine learning. Dataset yang digunakan adalah Diabetes Data Set dari Kaggle (https://www.kaggle.com/datasets/mathchi/diabetes-data-set), yang berisi informasi kesehatan 768 pasien, termasuk fitur seperti kadar glukosa, tekanan darah, indeks massa tubuh (BMI), dan usia.
+Dalam proyek ini, saya membangun sistem prediksi diabetes berdasarkan data kesehatan pasien menggunakan pendekatan klasifikasi machine learning. Dataset yang digunakan adalah Diabetes Data Set dari Kaggle, yang berisi informasi kesehatan 768 pasien, termasuk fitur seperti kadar glukosa, tekanan darah, indeks massa tubuh (BMI), dan usia.
 
 ## Business Understanding
 
@@ -46,10 +46,6 @@ Dataset diabetes.csv terdiri dari:
 - 768 baris
 - 8 kolom
 
-### Kondisi Data
-- Missing Value: Pada dataset ini, tidak ditemukan missing value, sehingga tidak diperlukan tindakan penghapusan baris data.
-- Duplicate: Pada dataset ini, tidak ditemukan data duplikasi, sehingga tidak diperlukan pembersihan lebih lanjut terkait data ganda.
-
 ## Exploratory Data Analysis (EDA)
 - **Distribusi Target (Outcome):** Pada distribusi target, terlihat bahwa jumlah pasien yang tidak menderita diabetes (Outcome = 0) jauh lebih banyak, dengan sekitar 500 pasien, dibandingkan dengan yang menderita diabetes (Outcome = 1) yang jumlahnya sekitar 260 orang.
 - **Visualisasi Fitur:** Setiap fitur dalam dataset divisualisasikan menggunakan histogram dan boxplot untuk memeriksa distribusi dan potensi adanya outlier.
@@ -64,7 +60,29 @@ Data dipersiapkan dengan membagi dataset menjadi fitur dan label (Outcome), kemu
 
 **Penjelasan Proses:**
 
-- **Memisahkan Fitur da Label:**
+- **Pengecekan Missing Value:**
+```python
+df.isnull().sum()
+```
+  | Kolom      | Jumlah Missing Values |
+  |----------------|---------|
+  | Pregnancies              | 0         |
+  | Glucose                     | 0         |
+  | BloodPressure                   | 0         |
+  | SkinThickness                  | 0         |
+  | Insulin                        | 0         |
+  | BMI                    | 0         |
+  | DiabetesPedigreeFunction                     | 0         |
+  | Age                    | 0         |
+  | Outcome                     | 0         |
+  
+Pada dataset ini, tidak ditemukan missing value, sehingga tidak diperlukan tindakan penghapusan baris data.
+- **Pengecekan Data Duplicate:**
+```python
+df.duplicated().sum()
+```
+Pada dataset ini, tidak ditemukan data duplikasi, sehingga tidak diperlukan pembersihan lebih lanjut terkait data ganda.
+- **Memisahkan Fitur dan Label:**
 ```python
 X = df.drop('Outcome', axis=1)
 y = df['Outcome']
@@ -89,42 +107,45 @@ Dua model digunakan dalam proyek ini untuk membandingkan hasil prediksi: Multila
 **Penjelasan Proses:**
 
  ### MLP (Neural Network)
+
 ```python
 model = Sequential([
     Dense(64, input_dim=X_train.shape[1], activation='relu'),
     Dense(32, activation='relu'),
     Dense(1, activation='sigmoid')
 ])
-```
-  - Arsitektur: 2 hidden layer (64 dan 32 neuron), aktivasi ReLU, output sigmoid untuk klasifikasi biner.
-  - Optimizer: adam
-  - Loss: binary_crossentropy
-  - Epoch: 100
-  - Data validasi digunakan untuk memantau overfitting.
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-Model neural network dengan dua lapisan tersembunyi (64 dan 32 neuron) berhasil dilatih selama 100 epoch dengan menggunakan fungsi aktivasi ReLU dan sigmoid di output.
- - **Akurasi dan Loss:** Model ini mencapai akurasi 75% di data pengujian dengan loss sebesar 0.46.
- - **ROC AUC:** Nilai AUC mencapai 0.82, menunjukkan kemampuan model dalam membedakan kelas dengan baik.
+history = model.fit(X_train, y_train, epochs=100, validation_data=(X_val, y_val), verbose=0)
+```
+- Arsitektur: 3 layer — Dense(64) → Dense(32) → Dense(1 dengan sigmoid).
+- Pemilihan 64 dan 32 neuron didasarkan pada eksperimen awal (32–32, 64–32, 128–64).
+- Aktivasi ReLU digunakan untuk percepatan konvergensi dan mencegah vanishing gradient.
+- Optimizer Adam dipilih karena adaptif dan cepat.
+- Loss function: binary_crossentropy, sesuai untuk klasifikasi biner.
+- Training selama 100 epoch; grafik menunjukkan stabil setelah ~80 epoch.
+- Tidak dilakukan hyperparameter tuning lanjutan, hanya uji arsitektur dasar dan pengamatan learning curve.
+- Dilatih dan dievaluasi sebanyak 3 kali untuk memastikan hasil konsisten.
 
 ### Random Forest
+
+Random Forest adalah ensemble learning yang menggunakan banyak pohon keputusan (100 estimators) untuk meningkatkan akurasi dan mengurangi overfitting. Model ini dilatih dengan parameter random_state=42 agar hasil konsisten. Random Forest cenderung kuat terhadap noise dan mampu menangani data dengan fitur yang banyak serta tipe variabel campuran.
 ```python
 rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
-
 ```
- - Algoritma ensemble berbasis pohon keputusan.
- - Parameter penting: n_estimators=100 (jumlah pohon dalam hutan), random_state untuk replikasi hasil.
- - Cocok untuk dataset dengan fitur campuran, tidak perlu normalisasi data.
+- Cocok untuk data tabular dengan fitur numerik seperti dalam proyek ini.
+- Performa stabil dan cenderung lebih baik dalam akurasi dan interpretabilitas dibanding MLP.
 
-Model Random Forest diinisialisasi dengan 100 pohon keputusan dan dilatih menggunakan data yang sama. 
- - **Akurasi dan Loss:** Model ini mencapai akurasi 75% di data pengujian.
- - **ROC AUC:** Nilai AUC Random Forest mencapai 0.81, sedikit lebih rendah dibandingkan dengan MLP.
-
-### Kelenihan dan Kekurangan Tiap Model
+### Kelebihan dan Kekurangan Tiap Model
 | Model             | Kelebihan                                                                       | Kekurangan                                                                                              |
 | ----------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | **MLP**           | Mampu menangkap pola non-linear yang kompleks; fleksibel untuk berbagai dataset | Butuh tuning parameter lebih hati-hati; sensitif terhadap skala data; rawan overfitting                 |
 | **Random Forest** | Robust terhadap overfitting; tidak perlu scaling; interpretasi relatif mudah    | Tidak sebaik neural network dalam menangani interaksi kompleks; hasil bisa tidak stabil pada data kecil |
+---
+### Model Terbaik
+model Random Forest dipilih sebagai model terbaik untuk proyek ini. Hal ini didasarkan pada beberapa pertimbangan penting, yaitu: proses pelatihan dan pengujian Random Forest berlangsung lebih cepat dan efisien, model ini lebih tahan terhadap overfitting, serta memiliki keunggulan dalam interpretabilitas. Random Forest memungkinkan kita untuk memahami kontribusi setiap fitur melalui feature importance, yang sangat membantu dalam menjelaskan hasil model kepada pihak non-teknis atau stakeholder. Dengan performa yang hampir setara dan kompleksitas yang lebih rendah, Random Forest dinilai sebagai pilihan yang lebih praktis dan dapat diandalkan untuk diterapkan dalam konteks nyata proyek ini.
 
+---
 
 ## Evaluasi Model
 Evaluasi model dilakukan menggunakan beberapa metrik, termasuk akurasi, precision, recall, f1-score, dan AUC.
