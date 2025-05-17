@@ -148,30 +148,16 @@ model Random Forest dipilih sebagai model terbaik untuk proyek ini. Hal ini dida
 ---
 
 ## Evaluasi Model
-Evaluasi model dilakukan menggunakan beberapa metrik, termasuk akurasi, precision, recall, f1-score, dan AUC.
-- **MLP:**
-  - **Confusion Matrix:**
-    - 67 pasien tanpa diabetes (Outcome = 0) berhasil diprediksi dengan benar, namun 7 pasien tersebut salah diprediksi sebagai diabetes.
-    - 19 pasien diabetes (Outcome = 1) berhasil diprediksi dengan benar, sementara 22 pasien tersebut salah diprediksi sebagai tidak diabetes.
-  - **Precision, Recall, F1-Score:** Precision untuk Outcome 0 adalah 0.76 dan untuk Outcome 1 adalah 0.73. Recall untuk Outcome 0 adalah 0.91 dan untuk Outcome 1 adalah 0.46. F1-Score untuk Outcome 0 adalah 0.82 dan untuk Outcome 1 adalah 0.57.
-  - **AUC:** Model ini menunjukkan ROC AUC sebesar 0.82, yang mengindikasikan performa yang baik dalam membedakan antara pasien diabetes dan non-diabetes.
-    
-- **Random Forest:**
-  - **Confusion Matrix:**
-    - 66 pasien tanpa diabetes berhasil diprediksi dengan benar, sementara 9 pasien tersebut salah diprediksi sebagai diabetes.
-    - 21 pasien diabetes berhasil diprediksi dengan benar, dan 20 pasien tersebut salah diprediksi sebagai non-diabetes.
-  - **Precision, Recall, F1-Score:** Precision untuk Outcome 0 adalah 0.77 dan untuk Outcome 1 adalah 0.70. Recall untuk Outcome 0 adalah 0.88 dan untuk Outcome 1 adalah 0.51. F1-Score untuk Outcome 0 adalah 0.82 dan untuk Outcome 1 adalah 0.59.
-  - **AUC:** Model ini menunjukkan ROC AUC sebesar 0.81, sedikit lebih rendah dari MLP.
+Dalam proyek ini, metrik evaluasi utama yang digunakan untuk mengukur kinerja model adalah akurasi dan AUC (Area Under Curve). Akurasi mengukur proporsi prediksi yang benar terhadap keseluruhan data uji, dihitung dengan rumus:
 
+``` Akurasi = (TP + TN) / (TP + TN + FP + FN) ```
 
-## Perbandingan Model
+di mana TP adalah True Positive, TN adalah True Negative, FP adalah False Positive, dan FN adalah False Negative. Metrik ini cocok digunakan untuk mengevaluasi performa awal, tetapi pada konteks medis seperti deteksi risiko diabetes, akurasi saja tidak cukup karena kita ingin menghindari kesalahan dalam mengidentifikasi pasien yang benar-benar berisiko (FN).
 
-- **Akurasi:**
-  - MLP: 75%
-  - Random Forest: 75%
-- **AUC:**
-  - MLP: 0.82
-  - Random Forest: 0.81
+Untuk itu, menggunakan AUC (Area Under the ROC Curve) karena metrik ini mempertimbangkan keseimbangan antara true positive rate (recall/sensitivity) dan false positive rate di berbagai threshold. AUC memberikan gambaran menyeluruh tentang kemampuan model dalam membedakan kelas positif dan negatif. AUC bernilai 0.5 berarti model tidak lebih baik dari tebak-tebakan, sementara AUC 1.0 berarti model sempurna.
 
-## Conclusion
-Dua model yang diuji dalam proyek ini, Multilayer Perceptron (MLP) dan Random Forest, memberikan hasil yang kompetitif dengan akurasi dan AUC yang mirip. Model Neural Network (MLP) sedikit lebih baik dibandingkan dengan Random Forest dalam hal akurasi dan AUC, meskipun perbedaannya tidak signifikan. MLP memiliki keunggulan dalam memisahkan kelas dengan lebih baik, sedangkan Random Forest lebih unggul dalam hal recall untuk Outcome 0, namun kalah dalam hal precision dan recall untuk Outcome 1.
+Hasil evaluasi menunjukkan bahwa model MLP memiliki akurasi 0.76 dan AUC 0.82, sedikit lebih tinggi dibandingkan Random Forest dengan akurasi 0.75 dan AUC 0.81. Hal ini menunjukkan bahwa kedua model cukup baik dalam mengklasifikasi pasien yang berisiko terkena diabetes, namun MLP sedikit lebih unggul dari segi kemampuan klasifikasi.
+
+Namun, mengingat konteks bisnis dan tujuan utama proyek — yaitu membangun sistem prediktif yang dapat membantu tenaga medis mendeteksi risiko diabetes sejak dini — kami memilih Random Forest sebagai solusi akhir. Meskipun performanya sedikit di bawah MLP, Random Forest lebih mudah diinterpretasikan dan lebih cepat saat dilatih maupun diuji, yang sangat penting dalam lingkungan klinis yang membutuhkan penjelasan model dan efisiensi waktu.
+
+Secara keseluruhan, hasil evaluasi model telah sesuai dengan problem statement: model dapat memprediksi risiko diabetes dengan cukup akurat berdasarkan data medis rutin, tanpa memerlukan tes lanjutan yang mahal atau invasif. Solusi yang dibangun juga selaras dengan goals proyek, yaitu membantu deteksi dini dan intervensi lebih awal melalui teknologi prediktif yang efektif dan praktis.
