@@ -27,7 +27,7 @@ Dalam proyek ini, saya membangun sistem prediksi diabetes berdasarkan data keseh
 
 ## Data Understanding
 
-Dataset ini Dapat dunduh di Kaggle: [Diabetes Data Set](https://www.kaggle.com/datasets/mathchi/diabetes-data-set)
+Dataset ini Dapat dunduh di Kaggle: [Diabetes Dataset](https://www.kaggle.com/datasets/mathchi/diabetes-data-set)
 
 Dataset yang digunakan adalah Diabetes Data Set dari Kaggle, berikut fitur yang ada dalam dataset:
 
